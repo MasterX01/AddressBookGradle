@@ -1,8 +1,15 @@
 package com.bridgelabz;
 
-import java.io.File;
-import java.io.IOException;
+import com.google.gson.Gson;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,7 +40,11 @@ public class AddressBookMain {
                             "12) Sort By Zip\n" +
                             "13) Write Address Book Data to File\n" +
                             "14) Read Address Book Data from File\n" +
-                            "15) Exit\n");
+                            "15) Write Address Book Data to CSV File\n" +
+                            "16) Read Address Book Data from CSV File\n" +
+                            "17) Write Address Book Data to JSON File\n" +
+                            "18) Read Address Book Data from JSON File\n" +
+                            "19) Exit\n");
         int choice = scan.nextInt();
         switch (choice){
             case 1:
@@ -92,6 +103,20 @@ public class AddressBookMain {
                 readData();
                 break;
             case 15:
+                writeDataTOCSV();
+                choiceSelect();
+                break;
+            case 16:
+                readDataFromCSV();
+                break;
+            case 17:
+                writeDataTOJSON();
+                choiceSelect();
+                break;
+            case 18:
+                readDataFromJSON();
+                break;
+            case 19:
                 System.exit(0);
         }
     }
@@ -236,6 +261,76 @@ public class AddressBookMain {
             Files.lines(new File("addressBook-file.txt").toPath()).map(line -> line.trim()).forEach(line -> System.out.println(line));
         } catch (IOException e) { }
     }
+
+    public void writeDataTOCSV() {
+        try {
+            Writer writer = Files.newBufferedWriter(Paths.get("AddressBook.csv"));
+
+            StatefulBeanToCsv<Person> beanToCsv = new StatefulBeanToCsvBuilder(writer)
+                    .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                    .build();
+            for (AddressBook book : setOfBooks.values()) {
+                try {
+                    beanToCsv.write(book.personArrayList);
+
+                } catch (CsvDataTypeMismatchException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch (IOException e){ }
+    }
+
+    public void readDataFromCSV(){
+        try{
+            Reader reader = Files.newBufferedReader(Paths.get("AddressBook.csv"));
+            CSVReader csvReader = new CSVReader(reader);
+            String[] record;
+            while((record = csvReader.readNext()) != null){
+                System.out.println("First Name - " + record[0]);
+                System.out.println("Last Name - " + record[1]);
+                System.out.println("Address - " + record[2]);
+                System.out.println("City - " + record[3]);
+                System.out.println("State - " + record[4]);
+                System.out.println("ZIP - " + record[5]);
+                System.out.println("Phone Number - " + record[6]);
+                System.out.println("Email - " + record[7]);
+            }
+        }catch (Exception e){ }
+    }
+
+    public void writeDataTOJSON(){
+        try {
+            List<Person> listOfPersons = new ArrayList<>();
+            setOfBooks.values().forEach(x->x.personArrayList.forEach(y->{
+                listOfPersons.add(y);
+            }));
+            Path filePath = Paths.get("AddressBook.json");
+            Gson gson = new Gson();
+            String json = gson.toJson(listOfPersons);
+            FileWriter writer = new FileWriter(String.valueOf(filePath));
+            writer.write(json);
+            writer.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void readDataFromJSON() {
+        try {
+            Gson gson1 = new Gson();
+            BufferedReader reader = new BufferedReader(new FileReader("AddressBook.json"));
+            Person[] personObj = gson1.fromJson(reader, Person[].class);
+            List<Person> csvUserList = Arrays.asList(personObj);
+            for (Person i : csvUserList) {
+                System.out.println(i.toString());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) {
         AddressBookMain obj = new AddressBookMain();
