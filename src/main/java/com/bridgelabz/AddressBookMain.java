@@ -1,8 +1,10 @@
 package com.bridgelabz;
 
-import java.io.File;
-import java.io.IOException;
+import com.google.gson.Gson;
+
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -236,6 +238,34 @@ public class AddressBookMain {
             Files.lines(new File("addressBook-file.txt").toPath()).map(line -> line.trim()).forEach(line -> System.out.println(line));
         } catch (IOException e) { }
     }
+
+    public void writeDataTOJSON(){
+        try {
+            List<Person> listOfPersons = new ArrayList<>();
+            setOfBooks.values().forEach(x->x.personArrayList.forEach(y->{
+                listOfPersons.add(y);
+            }));
+            Path filePath = Paths.get("AddressBook.json");
+            Gson gson = new Gson();
+            String json = gson.toJson(listOfPersons);
+            FileWriter writer = new FileWriter(String.valueOf(filePath));
+            writer.write(json);
+            writer.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void readDataFromJSON() throws FileNotFoundException {
+        Gson gson1 = new Gson();
+        BufferedReader reader = new BufferedReader(new FileReader("AddressBook.json"));
+        Person [] personObj = gson1.fromJson(reader,Person[].class);
+        List<Person> csvUserList = Arrays.asList(personObj);
+        for(Person i: csvUserList){
+            System.out.println(i.toString());
+        }
+    }
+
 
     public static void main(String[] args) {
         AddressBookMain obj = new AddressBookMain();
