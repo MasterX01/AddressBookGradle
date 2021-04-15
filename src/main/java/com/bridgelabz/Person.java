@@ -7,8 +7,11 @@ public class Person {
     String city;
     String state;
     String zip;
+    int zipInt;
     String pNo;
+    long pNoInt;
     String email;
+    String type;
 
     public String getFirstName() {
         return firstName;
@@ -52,6 +55,13 @@ public class Person {
         this.zip = zip;
     }
 
+    public int getZipInt() {
+        return zipInt;
+    }
+    public void setZipInt(int zip) {
+        this.zipInt = zip;
+    }
+
     public String getpNo() {
         return pNo;
     }
@@ -59,11 +69,25 @@ public class Person {
         this.pNo = pNo;
     }
 
+    public long getpNoInt() {
+        return pNoInt;
+    }
+    public void setpNoInt(Long pNo) {
+        this.pNoInt = pNo;
+    }
+
     public String getEmail() {
         return email;
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

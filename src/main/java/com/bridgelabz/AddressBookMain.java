@@ -297,6 +297,7 @@ public class AddressBookMain {
                 System.out.println("Phone Number - " + record[6]);
                 System.out.println("Email - " + record[7]);
             }
+            csvReader.close();
         }catch (Exception e){ }
     }
 
