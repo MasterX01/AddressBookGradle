@@ -37,4 +37,12 @@ public class AddressBookDB {
         return preparedStatement.executeQuery();
     }
 
+    public ResultSet retrieveForDateRange(String startDate, String endDate) throws SQLException {
+        String query = "select * from address_book where date_added between cast(? as date) and cast(? as date);";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, startDate);
+        preparedStatement.setString(2, endDate);
+        return preparedStatement.executeQuery();
+    }
+
 }

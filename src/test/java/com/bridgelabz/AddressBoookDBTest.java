@@ -11,7 +11,7 @@ public class AddressBoookDBTest {
 	public void givenDB_ShouldReturnAllEntriesInDB() throws ClassNotFoundException, SQLException {
 		AddressBookDBService addressBookDBService = new AddressBookDBService();
 		List<Person> personList = addressBookDBService.retrieveAllContacts();
-		Assert.assertEquals(1, personList.size());
+		Assert.assertEquals(2, personList.size());
 	}
 
 	@Test
@@ -24,6 +24,14 @@ public class AddressBoookDBTest {
 		Assert.assertEquals(1, success);
 		List<Person> personList = addressBookDBService.retrieveContact(firstName, lastName);
 		Assert.assertEquals(newAddress, personList.get(0).getAddress());
+	}
 
+	@Test
+	public void givenDateRange_ShouldReturnNoOfEmployeesAddedInDateRange() throws ClassNotFoundException, SQLException{
+		AddressBookDBService addressBookDBService = new AddressBookDBService();
+		String startDate = "2019-01-01";
+		String endDate = "2021-05-01";
+		List<Person> listPerson = addressBookDBService.retrieveForDateRange(startDate, endDate);
+		Assert.assertEquals(1, listPerson.size());
 	}
 }

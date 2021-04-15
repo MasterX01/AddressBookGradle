@@ -48,4 +48,21 @@ public class AddressBookDBService {
 		}
 		return personList;
 	}
+
+	public List<Person> retrieveForDateRange(String startDate, String endDate) throws ClassNotFoundException, SQLException {
+		ResultSet resultSet = new AddressBookDB().retrieveForDateRange(startDate, endDate);
+		while(resultSet.next()){
+			person.setFirstName(resultSet.getString(1));
+			person.setLastName(resultSet.getString(2));
+			person.setAddress(resultSet.getString(3));
+			person.setCity(resultSet.getString(4));
+			person.setState(resultSet.getString(5));
+			person.setZipInt(resultSet.getInt(6));
+			person.setpNoInt(resultSet.getLong(7));
+			person.setEmail(resultSet.getString(8));
+			person.setType(resultSet.getString(9));
+			personList.add(person);
+		}
+		return personList;
+	}
 }
