@@ -6,17 +6,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class AddressBoookDBTest {
+	AddressBookDBService addressBookDBService = new AddressBookDBService();
 
 	@Test
 	public void givenDB_ShouldReturnAllEntriesInDB() throws ClassNotFoundException, SQLException {
-		AddressBookDBService addressBookDBService = new AddressBookDBService();
 		List<Person> personList = addressBookDBService.retrieveAllContacts();
 		Assert.assertEquals(2, personList.size());
 	}
 
 	@Test
 	public void givenNameAndAddress_afterUpdate_ShouldMatchGivenAddress() throws ClassNotFoundException, SQLException{
-		AddressBookDBService addressBookDBService = new AddressBookDBService();
 		String firstName = "Akash";
 		String lastName = "Saxena";
 		String newAddress = "327, Riddhi Siddhi Nagar 1st";
@@ -28,10 +27,17 @@ public class AddressBoookDBTest {
 
 	@Test
 	public void givenDateRange_ShouldReturnNoOfEmployeesAddedInDateRange() throws ClassNotFoundException, SQLException{
-		AddressBookDBService addressBookDBService = new AddressBookDBService();
 		String startDate = "2019-01-01";
 		String endDate = "2021-05-01";
 		List<Person> listPerson = addressBookDBService.retrieveForDateRange(startDate, endDate);
 		Assert.assertEquals(1, listPerson.size());
+	}
+
+	@Test
+	public void givenCityAndState_ShouldReturnCountOfContactsInCityOrState() throws ClassNotFoundException, SQLException{
+		String city = "Kota";
+		String state = "Gujrat";
+		int count = addressBookDBService.countByCityOrState(city, state);
+		Assert.assertEquals(2, count);
 	}
 }

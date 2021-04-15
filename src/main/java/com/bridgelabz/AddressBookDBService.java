@@ -65,4 +65,12 @@ public class AddressBookDBService {
 		}
 		return personList;
 	}
+
+	public int countByCityOrState(String city, String state) throws ClassNotFoundException, SQLException {
+		ResultSet resultSet = new AddressBookDB().countByCityOrState(city, state);
+		if(resultSet.next()){
+			return resultSet.getInt(1);
+		}
+		return resultSet.getInt(1);
+	}
 }

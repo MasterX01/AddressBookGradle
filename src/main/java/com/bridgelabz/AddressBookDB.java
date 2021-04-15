@@ -45,4 +45,12 @@ public class AddressBookDB {
         return preparedStatement.executeQuery();
     }
 
+    public ResultSet countByCityOrState(String city, String state) throws SQLException {
+        String query = "select count(*) from address_book where city=? or state=?;";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, city);
+        preparedStatement.setString(2, state);
+        return preparedStatement.executeQuery();
+    }
+
 }
