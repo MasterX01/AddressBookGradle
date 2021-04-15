@@ -1,1 +1,15 @@
-[{"firstName":"Akash","lastName":"Saxena","address":"327, RSN 1st","city":"Kota","state":"Rajasthan","zip":"321654","pNo":"1234567890","email":"akash14@gmail.com"}]
+{
+"Family":[
+{
+"firstName":"Akash",
+"lastName":"Saxena",
+"address":"327",
+"city":"Kota",
+"state":"Rajasthan",
+"zip":"321654",
+"pNo":"9876543210",
+"email":"akash14"
+}
+]
+}
+
