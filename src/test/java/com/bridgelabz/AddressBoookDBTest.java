@@ -40,4 +40,19 @@ public class AddressBoookDBTest {
 		int count = addressBookDBService.countByCityOrState(city, state);
 		Assert.assertEquals(2, count);
 	}
+
+	@Test
+	public void givenContactDetails_whenAddedToDB_ShouldMatchContactCount() throws ClassNotFoundException, SQLException{
+		String fname = "Utkarsh";
+		String lname = "Kumar";
+		String address = "Seelampur, Delhi";
+		String city = "Delhi";
+		String state = "Delhi";
+		int zip = 987654;
+		long phone = Long.parseLong("9876543210");
+		String email = "utkarsh@gmail.com";
+		String type = "Friends";
+		List<Person> personList = addressBookDBService.addContact(fname, lname, address, city, state, zip, phone, email, type);
+		Assert.assertEquals(3, personList.size());
+	}
 }

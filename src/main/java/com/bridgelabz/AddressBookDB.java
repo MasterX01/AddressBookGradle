@@ -53,4 +53,21 @@ public class AddressBookDB {
         return preparedStatement.executeQuery();
     }
 
+    public int addContact(String fname, String lname, String address, String city, String state, int zip, long phone, String email, String type) throws SQLException {
+        String query = "insert into address_book (fname, lname, address, city, state, zip, phone, email, type) " + 
+                        "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, fname);
+        preparedStatement.setString(2, lname);
+        preparedStatement.setString(3, address);
+        preparedStatement.setString(4, city);
+        preparedStatement.setString(5, state);
+        preparedStatement.setInt(6, zip);
+        preparedStatement.setLong(7, phone);
+        preparedStatement.setString(8, email);
+        preparedStatement.setString(9, type);
+
+        return preparedStatement.executeUpdate();
+    }
+
 }

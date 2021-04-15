@@ -73,4 +73,13 @@ public class AddressBookDBService {
 		}
 		return resultSet.getInt(1);
 	}
+
+	public List<Person> addContact(String fname, String lname, String address, String city, String state, int zip, long phone,
+			String email, String type) throws ClassNotFoundException, SQLException {
+		int success = new AddressBookDB().addContact(fname, lname, address, city, state, zip, phone, email, type);
+		if(success != 1){
+			System.exit(0);
+		}
+		return this.retrieveAllContacts();
+	}
 }
