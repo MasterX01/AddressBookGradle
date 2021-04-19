@@ -13,6 +13,22 @@ public class Person {
     String email;
     String type;
 
+    public Person(String firstName, String lastName, String address, String city, String state, int zipInt, long pNoInt, String email, String type){
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.address=address;
+        this.city=city;
+        this.state=state;
+        this.zipInt=zipInt;
+        this.pNoInt=pNoInt;
+        this.email=email;
+        this.type=type;
+    }
+
+    public Person(){
+        
+    }
+
     public String getFirstName() {
         return firstName;
     }

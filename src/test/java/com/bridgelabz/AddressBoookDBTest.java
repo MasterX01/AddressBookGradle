@@ -1,6 +1,8 @@
 package com.bridgelabz;
 
+import java.lang.reflect.Array;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -54,5 +56,15 @@ public class AddressBoookDBTest {
 		String type = "Friends";
 		List<Person> personList = addressBookDBService.addContact(fname, lname, address, city, state, zip, phone, email, type);
 		Assert.assertEquals(3, personList.size());
+	}
+
+	@Test
+	public void givenMultipleContacts_ShouldAddToDBUsingThreads() throws ClassNotFoundException, SQLException, InterruptedException{
+		Person[] contactArray = {
+			new Person("Akash", "Saxena", "327", "kota", "raj", 321654, Long.parseLong("9876543210"), "aakashsaxna14@gmail.com", "Family"),
+			new Person("Utkarsh", "Gola", "Seelampur", "Delhi", "Delhi", 321654, Long.parseLong("9876543210"), "utkarshkumar@gmail.com", "Friends")
+		};
+		addressBookDBService.addListOfContacts(Arrays.asList(contactArray));
+		Assert.assertEquals(9, addressBookDBService.retrieveAllContacts().size());
 	}
 }

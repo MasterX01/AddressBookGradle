@@ -7,12 +7,15 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class AddressBookMain {
 
@@ -103,7 +106,8 @@ public class AddressBookMain {
                 readData();
                 break;
             case 15:
-                writeDataTOCSV();
+                //writeDataToCSVFile(); //Utkarsh
+                writeDataTOCSV();  //Akash
                 choiceSelect();
                 break;
             case 16:
@@ -261,22 +265,33 @@ public class AddressBookMain {
             Files.lines(new File("addressBook-file.txt").toPath()).map(line -> line.trim()).forEach(line -> System.out.println(line));
         } catch (IOException e) { }
     }
-
-    public void writeDataTOCSV() {
+    
+    public void writeDataTOCSV() {  //Akash Function
         try {
-            Writer writer = Files.newBufferedWriter(Paths.get("AddressBook.csv"));
+            FileWriter writer = new FileWriter("AddressBook.csv");
 
-            StatefulBeanToCsv<Person> beanToCsv = new StatefulBeanToCsvBuilder(writer)
-                    .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-                    .build();
             for (AddressBook book : setOfBooks.values()) {
                 try {
-                    beanToCsv.write(book.personArrayList);
+                    book.personArrayList.forEach(person -> {
+                        try{
+                            writer.append(person.firstName + ",");
+                            writer.append(person.lastName + ",");
+                            writer.append(person.address + ",");
+                            writer.append(person.city + ",");
+                            writer.append(person.state + ",");
+                            writer.append(person.zip + ",");
+                            writer.append(person.pNo + ",");
+                            writer.append(person.email);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
 
-                } catch (CsvDataTypeMismatchException e) {
-                    e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
+                }finally{
+                    writer.flush();
+                    writer.close();
                 }
             }
         }catch (IOException e){ }
@@ -288,14 +303,14 @@ public class AddressBookMain {
             CSVReader csvReader = new CSVReader(reader);
             String[] record;
             while((record = csvReader.readNext()) != null){
-                System.out.println("First Name - " + record[0]);
-                System.out.println("Last Name - " + record[1]);
-                System.out.println("Address - " + record[2]);
-                System.out.println("City - " + record[3]);
-                System.out.println("State - " + record[4]);
-                System.out.println("ZIP - " + record[5]);
-                System.out.println("Phone Number - " + record[6]);
-                System.out.println("Email - " + record[7]);
+                System.out.print("First Name - " + record[0]);
+                System.out.print(" Last Name - " + record[1]);
+                System.out.print(" Address - " + record[2]);
+                System.out.print(" City - " + record[3]);
+                System.out.print(" State - " + record[4]);
+                System.out.print(" ZIP - " + record[5]);
+                System.out.print(" Phone Number - " + record[6]);
+                System.out.print(" Email - " + record[7]);
             }
             csvReader.close();
         }catch (Exception e){ }

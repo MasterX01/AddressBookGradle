@@ -3,7 +3,9 @@ package com.bridgelabz;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookDBService {
 	
@@ -82,4 +84,34 @@ public class AddressBookDBService {
 		}
 		return this.retrieveAllContacts();
 	}
+
+    public void addListOfContacts(List<Person> asList) throws InterruptedException {
+		Map<Integer, Boolean>  threadStatus = new HashMap<Integer, Boolean>();
+		asList.forEach(Person ->{
+			Runnable task = () -> {
+				threadStatus.put(Person.hashCode(), true);
+				try {
+					int countSuccess = new AddressBookDB().addContact(Person.firstName, 
+																		Person.lastName, 
+																		Person.address, 
+																		Person.city, 
+																		Person.state, 
+																		Person.zipInt, 
+																		Person.pNoInt,
+																		Person.email,
+																		Person.type);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				threadStatus.put(Person.hashCode(), false); 
+			};
+			Thread thread = new Thread(task, Person.firstName);
+			thread.start();
+		});
+		while(threadStatus.containsValue(true)){
+			Thread.sleep(100);
+		}
+		Thread.sleep(4000);
+    }
 }
